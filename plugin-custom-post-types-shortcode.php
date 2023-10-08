@@ -19,22 +19,24 @@
  // shortcode to take the data from database and display as a table
 function wpdb_mysql_show(){
 	global $wpdb;
-	$results = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_status = 'publish' AND post_type='post' ORDER BY post_date ASC LIMIT 0,14");
+	//$results = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_status = 'publish' AND post_type='post' ORDER BY post_date ASC LIMIT 0,14");
+    $results = $wpdb->get_results("SELECT * FROM wp_posts WHERE post_type='event_listing'");
 
-	ob_start();
+
+    ob_start();
 ?>
 	<div style="color:red; font-weight:700">sdfsdfsd</div>
 	<div style="color:green; font-weight:700"><?php echo $results; ?></div>
 	<?php
 		foreach ($results as $title) { ?>
-		<table>
-		<tr>
-			<td style="color:blue; font-weight:700"><?php echo $title->post_title; ?></td>
-		</tr>
-		</table>
+		<div style="color:blue; font-weight:700"><?php echo $title->post_title; ?></div>
+		<div style="color:green; font-weight:700"><?php echo $title->ID; ?></div>
+		<div style="color:green; font-weight:700"><?php echo get_post_meta($title->ID, '_event_start_date', true); ?></div>
+		
+		<div style="color:red; font-weight:700">sdfsdfsd</div>
 		<?php }
 
 	return  ob_get_clean();
 }
 
-add_shortcode('posts_titles','wpdb_mysql_show');
+add_shortcode('posts_data_from_mysql','wpdb_mysql_show');
